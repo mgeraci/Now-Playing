@@ -1,36 +1,11 @@
-#! /bin/bash
+#! /usr/bin/env ruby
 
-#osascript -e 'tell application "iTunes" to if player state is playing then "Now Playing: " & name of current track & " - " & artist of current track'
+artist = `osascript -e 'tell application "iTunes" to get artist of current track'`
+year = `osascript -e 'tell application "iTunes" to get year of current track'`
+album = `osascript -e 'tell application "iTunes" to get album of current track'`
+title = `osascript -e 'tell application "iTunes" to get name of current track'`
 
-title=$(/usr/bin/osascript << EOT
-tell app "AppleScript Runner"
-  activate
-  tell application "iTunes" to if player state is playing then name of current track
-end
-EOT)
-
-artist=$(/usr/bin/osascript << EOT
-tell app "AppleScript Runner"
-  activate
-  tell application "iTunes" to if player state is playing then artist of current track
-end
-EOT)
-
-album=$(/usr/bin/osascript << EOT
-tell app "AppleScript Runner"
-  activate
-  tell application "iTunes" to if player state is playing then album of current track
-end
-EOT)
-
-year=$(/usr/bin/osascript << EOT
-tell app "AppleScript Runner"
-  activate
-  tell application "iTunes" to if player state is playing then year of current track
-end
-EOT)
-
-echo $title
-echo $artist
-echo $year
-echo $album
+puts artist
+puts year
+puts album
+puts title
