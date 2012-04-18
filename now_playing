@@ -1,11 +1,15 @@
 #! /usr/bin/env ruby
 
-artist = `osascript -e 'tell application "iTunes" to get artist of current track'`
-year = `osascript -e 'tell application "iTunes" to get year of current track'`
-album = `osascript -e 'tell application "iTunes" to get album of current track'`
-title = `osascript -e 'tell application "iTunes" to get name of current track'`
+if `osascript -e 'tell application "iTunes" to get player state'`.gsub(/\s/, '') == 'playing'
+  artist = `osascript -e 'tell application "iTunes" to get artist of current track'`
+  year = `osascript -e 'tell application "iTunes" to get year of current track'`
+  album = `osascript -e 'tell application "iTunes" to get album of current track'`
+  title = `osascript -e 'tell application "iTunes" to get name of current track'`
 
-puts artist
-puts year
-puts album
-puts title
+  puts artist
+  puts year
+  puts album
+  puts title
+else
+  puts 'nothing is on!'
+end
