@@ -1,5 +1,15 @@
 #! /usr/bin/env ruby
 
+# get secret key for posting to server
+# requires file in this directory called 'secret'
+secret = ''
+f = File.open('secret', 'r')
+f.each_line do |line|
+  secret += line
+end
+secret = secret.gsub(/\s/, '')
+
+# get info from itunes if playing
 if `osascript -e 'tell application "iTunes" to get player state'`.gsub(/\s/, '') == 'playing'
   artist = `osascript -e 'tell application "iTunes" to get artist of current track'`
   year = `osascript -e 'tell application "iTunes" to get year of current track'`
