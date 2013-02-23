@@ -6,18 +6,18 @@ if Meteor.isClient
     "See what's playing"
 
   Template.song_list.songs = ->
-    Songs.find()
+    Songs.find {}, sort: {time: -1}
 
 if Meteor.isServer
   Meteor.startup ->
     #Songs.remove({})
 
     # code to run on server at startup
-    params = getUrlVars "whatever?artist=Wilco&title=Side With The Seeds&album=Sky%20Blue%20Sky"
-    console.log params.artist, params.title, params.album
-
     if Songs.find().count() == 0
       console.log 'we are empty'
+
+      # seed a test song
+      params = getUrlVars "whatever?artist=Wilco&title=Side With The Seeds&album=Sky%20Blue%20Sky"
       Songs.insert
         artist: params.artist
         album: params.album
@@ -32,9 +32,19 @@ if Meteor.isServer
   router = connect.middleware.router (route) ->
     route.get '/foo', (req, res) ->
       Fiber () ->
+        # get the parameters from the request
         params = getUrlVars(req.originalUrl)
-        name = params.name
-        #return Songs.insert({name: name, score: 0})
+
+        # don't do anything if the request is the same
+        # as the most recent entry
+        last_song = Songs.findOne {}, sort: {time: -1}
+        return if last_song.artist == params.artist && last_song.album == params.album && last_song.title == params.title
+
+        Songs.insert
+          artist: params.artist
+          album: params.album
+          title: params.title
+          time: (new Date()).getTime()
       .run()
       res.writeHead(200)
       res.end()
