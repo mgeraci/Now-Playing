@@ -30,8 +30,11 @@ if Meteor.isServer
   app = __meteor_bootstrap__.app
 
   router = connect.middleware.router (route) ->
-    route.get '/foo', (req, res) ->
+    route.get '/add_song', (req, res) ->
       Fiber () ->
+        console.log 'we hit this route'
+        console.log req
+
         # get the parameters from the request
         params = getUrlVars(req.originalUrl)
 
