@@ -12,10 +12,14 @@ print "Version: %s" % sc.get_version()
 
 sq = sc.get_player("00:04:20:07:98:43")
 
+sq.get_mode()
 print "Name: %s | Mode: %s | Time: %s | Connected: %s | WiFi: %s" % (sq.get_name(), sq.get_mode(), sq.get_time_elapsed(), sq.is_connected, sq.get_wifi_signal_strength())
 
-artist = sq.get_track_artist()
-album = sq.get_track_album()
-title = sq.get_track_title()
+if sq.get_mode() == 'play':
+  artist = sq.get_track_artist()
+  album = sq.get_track_album()
+  title = sq.get_track_title()
 
-print "%s - %s - %s" % (artist, album, title)
+  print "%s - %s - %s" % (artist, album, title)
+elif sq.get_mode() == 'stop':
+  print "Nothing's playing"

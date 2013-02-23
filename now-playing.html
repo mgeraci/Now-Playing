@@ -1,0 +1,26 @@
+<head>
+  <title>Now Playing</title>
+</head>
+
+<body>
+  {{> hello}}
+  <br>
+  {{> song_list}}
+</body>
+
+<template name="hello">
+  <h1>Hello World!</h1>
+  {{greeting}}
+</template>
+
+<template name="song_list">
+  <ul>
+    {{#each songs}}
+      {{> song}}
+    {{/each}}
+  </ul>
+</template>
+
+<template name="song">
+<li data-time="{{time}}">{{artist}} - {{album}} - {{title}}</li>
+</template>
