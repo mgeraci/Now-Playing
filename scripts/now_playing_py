@@ -1,16 +1,23 @@
 #!/usr/bin/env python
 
-import httplib, urllib
+import httplib, urllib, sys
 from pylms.server import Server
 from pylms.player import Player
 
+# set the domain (pass test in as an arg to get localhost)
+domain = "now-playing.meteor.com"
+
+if len(sys.argv[1:]) > 0:
+  if sys.argv[1:][0] == 'test':
+    domain = "127.0.0.1:3000"
+
+# connect to the squeezebox
 sc = Server(hostname="192.168.1.111", port=9090)
 sc.connect()
+sq = sc.get_player("00:04:20:07:98:43")
 
 print "Logged in: %s" % sc.logged_in
 print "Version: %s" % sc.get_version()
-
-sq = sc.get_player("00:04:20:07:98:43")
 
 if sq.get_mode() == 'play':
   artist = sq.get_track_artist()
@@ -21,7 +28,7 @@ if sq.get_mode() == 'play':
   print ""
 
   params = urllib.urlencode({'artist': artist, 'album': album, 'title': title})
-  conn = httplib.HTTPConnection("127.0.0.1:3000")
+  conn = httplib.HTTPConnection(domain)
   url = "/add_song?%s" % (params)
 
   print "posting..."
