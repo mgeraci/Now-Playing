@@ -9,6 +9,10 @@ if Meteor.isClient
     Songs.find {}, sort: {time: -1}
 
 if Meteor.isServer
+  # import the FileSystem API and get the secret key
+  fs = __meteor_bootstrap__.require('fs')
+  secret = fs.readFileSync("secret.txt").toString()
+
   Meteor.startup ->
     #Songs.remove({})
 
