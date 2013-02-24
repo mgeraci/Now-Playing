@@ -3,10 +3,17 @@ Songs = new Meteor.Collection "songs"
 
 # import the FileSystem API and get the secret key
 fs = __meteor_bootstrap__.require('fs')
-keyfile = "./secretkey.txt"
-console.log fs.existsSync keyfile
-if fs.existsSync keyfile
-  secret = fs.readFileSync(keyfile).toString().replace(/\n/g, '')
+keyfile = "secretkey.txt"
+secret = "" # init so we don't get a later if there's no key found
+
+if fs.existsSync "./#{keyfile}"
+  console.log 'in the obvious block'
+  secret = fs.readFileSync("./#{keyfile}").toString().replace(/\n/g, '')
+
+if fs.existsSync "#{keyfile}"
+  console.log 'in the good block'
+  secret = fs.readFileSync("#{keyfile}").toString().replace(/\n/g, '')
+
 console.log "secret: #{secret}"
 
 Meteor.startup ->
@@ -24,35 +31,35 @@ Meteor.startup ->
       title: params.title
       time: (new Date()).getTime()
 
-# define a custom router and path for adding data to the db
-fibers = __meteor_bootstrap__.require("fibers")
-connect = __meteor_bootstrap__.require('connect')
-app = __meteor_bootstrap__.app
+  # define a custom router and path for adding data to the db
+  fibers = __meteor_bootstrap__.require("fibers")
+  connect = __meteor_bootstrap__.require('connect')
+  app = __meteor_bootstrap__.app
 
-router = connect.middleware.router (route) ->
-  route.get '/add_song', (req, res) ->
-    Fiber () ->
-      # get the parameters from the request
-      params = getUrlVars(req.originalUrl)
+  router = connect.middleware.router (route) ->
+    route.get '/add_song', (req, res) ->
+      Fiber () ->
+        # get the parameters from the request
+        params = getUrlVars(req.originalUrl)
 
-      # check secret key
-      return if params.secret.toString() != secret.toString()
+        # check secret key
+        return if params.secret.toString() != secret.toString()
 
-      # don't do anything if the request is the same
-      # as the most recent entry
-      last_song = Songs.findOne {}, sort: {time: -1}
-      return if last_song.artist == params.artist && last_song.album == params.album && last_song.title == params.title
+        # don't do anything if the request is the same
+        # as the most recent entry
+        last_song = Songs.findOne {}, sort: {time: -1}
+        return if last_song.artist == params.artist && last_song.album == params.album && last_song.title == params.title
 
-      Songs.insert
-        artist: params.artist
-        album: params.album
-        title: params.title
-        time: (new Date()).getTime()
-    .run()
-    res.writeHead(200)
-    res.end()
+        Songs.insert
+          artist: params.artist
+          album: params.album
+          title: params.title
+          time: (new Date()).getTime()
+      .run()
+      res.writeHead(200)
+      res.end()
 
-app.use(router)
+  app.use(router)
 
 # return a hash or parameters from a url
 getUrlVars = (req) ->
