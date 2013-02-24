@@ -11,7 +11,7 @@ if Meteor.isClient
 if Meteor.isServer
   # import the FileSystem API and get the secret key
   fs = __meteor_bootstrap__.require('fs')
-  secret = fs.readFileSync("secret.txt").toString()
+  secret = fs.readFileSync("secretkey.txt").toString()
 
   Meteor.startup ->
     #Songs.remove({})
