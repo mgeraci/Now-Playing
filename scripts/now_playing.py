@@ -4,6 +4,10 @@ import httplib, urllib, sys
 from pylms.server import Server
 from pylms.player import Player
 
+# get the secret key
+f = open('/Users/mgeraci/Web/Now-Playing/secretkey.txt', 'r')
+secret = f.readline().strip()
+
 # set the domain (pass test in as an arg to get localhost)
 domain = "now-playing.meteor.com"
 
@@ -27,7 +31,7 @@ if sq.get_mode() == 'play':
   print "%s - %s - %s" % (artist, album, title)
   print ""
 
-  params = urllib.urlencode({'artist': artist, 'album': album, 'title': title})
+  params = urllib.urlencode({'artist': artist, 'album': album, 'title': title, 'secret': secret})
   conn = httplib.HTTPConnection(domain)
   url = "/add_song?%s" % (params)
 

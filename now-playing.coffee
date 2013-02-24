@@ -11,7 +11,7 @@ if Meteor.isClient
 if Meteor.isServer
   # import the FileSystem API and get the secret key
   fs = __meteor_bootstrap__.require('fs')
-  secret = fs.readFileSync("secretkey.txt").toString()
+  secret = fs.readFileSync("secretkey.txt").toString().replace(/\n/g, '')
 
   Meteor.startup ->
     #Songs.remove({})
@@ -36,11 +36,11 @@ if Meteor.isServer
   router = connect.middleware.router (route) ->
     route.get '/add_song', (req, res) ->
       Fiber () ->
-        console.log 'we hit this route'
-        console.log req
-
         # get the parameters from the request
         params = getUrlVars(req.originalUrl)
+
+        # check secret key
+        return if params.secret.toString() != secret.toString()
 
         # don't do anything if the request is the same
         # as the most recent entry
