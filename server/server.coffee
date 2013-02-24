@@ -3,7 +3,7 @@ Songs = new Meteor.Collection "songs"
 
 # import the FileSystem API and get the secret key
 fs = __meteor_bootstrap__.require('fs')
-secret = fs.readFileSync("public/secretkey.txt").toString().replace(/\n/g, '')
+secret = fs.readFileSync("./secretkey.txt").toString().replace(/\n/g, '')
 
 Meteor.startup ->
   #Songs.remove({})
