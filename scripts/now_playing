@@ -1,13 +1,15 @@
 #! /usr/bin/env ruby
 
+require 'net/http'
+require 'uri'
+
 # get secret key for posting to server
-# requires file in this directory called 'secret'
-secret = ''
-f = File.open('secret', 'r')
-f.each_line do |line|
-  secret += line
+f = File.open('/Users/mgeraci/Web/Now-Playing/secretkey.txt', 'r')
+
+while line = f.gets
+  secret = line
 end
-secret = secret.gsub(/\s/, '')
+f.close
 
 # get info from itunes if playing
 if `osascript -e 'tell application "iTunes" to get player state'`.gsub(/\s/, '') == 'playing'
@@ -20,6 +22,22 @@ if `osascript -e 'tell application "iTunes" to get player state'`.gsub(/\s/, '')
   puts year
   puts album
   puts title
+  puts secret
+
+  #params = "&artist=#{artist}&album=#{album}&title=#{title}&secret=#{secret}"
+  #response = http.post('http://127.0.0.1:3000/add_song', params)
+
+  url = URI('http://127.0.0.1:3000/add_song')
+  #url = URI('http://now-playing.meteor.com/add_song')
+  args = {
+    'artist' => artist,
+    'album' => album,
+    'title' => title,
+    'secret' => secret
+  }
+
+  res = Net::HTTP.post_form url, args
+  puts res.body
 else
   puts 'nothing is on!'
 end
