@@ -38,13 +38,8 @@ app = __meteor_bootstrap__.app
 router = connect.middleware.router (route) ->
   route.get '/add_song', (req, res) ->
     Fiber () ->
-      console.log 'hit me'
       # get the parameters from the request
       params = getUrlVars(req.originalUrl)
-
-      console.log "params: #{params.secret.toString()}"
-      console.log "server: #{secret.toString()}"
-      console.log params.secret.toString() == secret.toString()
 
       # check secret key
       return if params.secret.toString() != secret.toString()
