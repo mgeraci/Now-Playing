@@ -4,6 +4,8 @@ import httplib, urllib, sys
 from pylms.server import Server
 from pylms.player import Player
 
+print u"\u03A9"
+
 # get the secret key
 f = open('/Users/mgeraci/Web/Now-Playing/secretkey.txt', 'r')
 secret = f.readline().strip()
