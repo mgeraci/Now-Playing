@@ -13,5 +13,6 @@ Template.song_list.songs = ->
 
 Template.song_list.events =
   "click #more": (e)->
+    e.preventDefault()
     count = Session.get("number_of_visible_songs") + page_size
     Session.set "number_of_visible_songs", count
