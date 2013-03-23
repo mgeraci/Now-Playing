@@ -27,7 +27,7 @@ if `osascript -e 'tell application "iTunes" to get player state'`.gsub(/\s/, '')
   puts secret
 
   # assemble the url
-  if ARGV.to_s == "test"
+  if ARGV.to_s == "test" #|| 1 == 1
     domain = "http://127.0.0.1:3000"
   else
     domain = "http://now-playing.meteor.com"

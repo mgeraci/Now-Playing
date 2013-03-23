@@ -11,14 +11,14 @@ isBundle = fs.existsSync(base + '/bundle')
 path = base + (if isBundle then '/bundle/static' else '/public') + "/secretkey.txt"
 
 if fs.existsSync path
-  secret = fs.readFileSync(path).toString().replace(/\n/g, '')
+  secret = fs.readFileSync(path)?.toString()?.replace(/\n/g, '')
 
 console.log "secret: #{secret}"
 
 Meteor.startup ->
   #Songs.remove({})
 
-  # code to run on server at startup
+  # add a test song if there's nothing in the db
   if Songs.find().count() == 0
     console.log 'we are empty'
 
@@ -68,6 +68,6 @@ getUrlVars = (req) ->
   for h in hashes
     hash = h.split('=')
     vars.push(hash[0])
-    vars[hash[0]] = hash[1].replace(/%20/g, ' ').replace(/\+/g, ' ')
+    vars[hash[0]] = hash[1]?.replace(/%20/g, ' ')?.replace(/\+/g, ' ')
 
   vars

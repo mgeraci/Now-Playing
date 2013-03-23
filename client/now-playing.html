@@ -14,11 +14,12 @@
 </template>
 
 <template name="song_list">
-  <ul>
+  <ul id="song-list">
     {{#each songs}}
       {{> song}}
     {{/each}}
   </ul>
+  <a href="#" id="more">load more</a>
 </template>
 
 <template name="song">
