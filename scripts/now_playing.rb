@@ -33,6 +33,7 @@ if `osascript -e 'application "iTunes" is running'`
 		else
 			domain = "http://now-playing.meteor.com"
 		end
+
 		path = "add_song"
 		path = "#{path}?secret=#{secret}&artist=#{artist}&album=#{album}&title=#{title}"
 		url = URI.parse "#{domain}/#{path}"
@@ -41,6 +42,7 @@ if `osascript -e 'application "iTunes" is running'`
 		Net::HTTP.get_response url
 	else
 		puts 'Nothing is on!'
+	end
 else
   puts 'iTunes is not running.'
 end
