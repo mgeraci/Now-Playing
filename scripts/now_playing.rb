@@ -15,7 +15,7 @@ end
 f.close
 secret = clean_string secret
 
-if `osascript -e 'application "iTunes" is running'`
+if `osascript -e 'application "iTunes" is running'` == true
 	# get info from itunes if playing
 	if `osascript -e 'tell application "iTunes" to get player state'`.gsub(/\s/, '') == 'playing'
 		artist = clean_string `osascript -e 'tell application "iTunes" to get artist of current track'`
